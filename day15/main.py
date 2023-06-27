@@ -17,22 +17,8 @@ def print_resources():
         print(f"Resource: {resource}  \t{amount}{unit} left")
 
 
-def get_user_input():
-    print('What would you like? (espresso/latte/cappuccino):')
-    while True:
-        ans = input("Input: ").lower()
-        if ans == 'off':
-            quit()
-        elif ans == 'report':
-            print_resources()
-            return None
-        elif ans in MENU.keys():
-            return ans
-        else:
-            print('Invalid input!\n')
-
-
 def check_sufficient_resources(drink):
+    """Checks if the coffee machine got sufficient resources for the drink"""
     ingredients = MENU[drink]['ingredients']
     for resource, amount in ingredients.items():
         if resources.get(resource, 0) < amount:
@@ -42,9 +28,23 @@ def check_sufficient_resources(drink):
     return True
 
 
+def get_user_input():
+    print('What would you like? (espresso/latte/cappuccino):')
+    while True:
+        answer = input("Input: ").lower()
+        if answer == 'off':
+            quit()
+        elif answer == 'report':
+            print_resources()
+            return None
+        elif answer in MENU.keys():
+            return answer
+        else:
+            print('Invalid input!\n')
 
 
-
+def count_coins(drink):
+    return drink
 
 
 # TODO: Process coins.\
@@ -58,16 +58,15 @@ def check_sufficient_resources(drink):
 
 # TODO: Make Coffee.
 
+
 def main():
     print_menu()
     print_resources()
     drink = get_user_input()
     print(drink)
-    if drink:
-        brew_drink = check_sufficient_resources(drink)
-        print(brew_drink)
-        print_resources()
-
+    if check_sufficient_resources(drink):
+        count_coins(MENU[drink]['cost'])
+        
 
 if __name__ == '__main__':
     main()
