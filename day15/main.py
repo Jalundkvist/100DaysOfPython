@@ -75,8 +75,8 @@ def process_coins(drink):
         # Input validation
         if any(coin < 0 for coin in [penny, nickel, dime, quarter]):
             raise ValueError("Number of coins cannot be negative.")
-    except ValueError as e:
-        print(f"Invalid input: {e}")
+    except ValueError as err:
+        print(f"Invalid input: {err}")
         return None
 
     total_amount = round(penny + nickel + dime + quarter, 2)
@@ -91,7 +91,6 @@ def process_coins(drink):
 
 def main():
     while True:
-        drink, change = None, None
         drink = get_user_input()
         if not drink:
             continue
