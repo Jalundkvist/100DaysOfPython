@@ -32,14 +32,12 @@ def print_resources():
 def check_sufficient_resources(drink):
     """Checks if the coffee machine got sufficient resources for the drink"""
     ingredients = MENU[drink]['ingredients']
-    missing_resource = False
+    missing_resources = False
     for resource, amount in ingredients.items():
         if resources.get(resource, 0) < amount:
             print(f'Sorry there is not enough {resource}')
-            missing_resource = True
-    if missing_resource:
-        return False
-    return True
+            missing_resources = True
+    return missing_resources
 
 
 def make_drink(drink):
