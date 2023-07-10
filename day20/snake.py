@@ -54,5 +54,3 @@ class Snake:
         elif head.ycor() >= SCREEN_RADIUS or head.ycor() <= -SCREEN_RADIUS:
             return False
         return True
-
-

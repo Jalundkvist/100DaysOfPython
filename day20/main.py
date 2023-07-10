@@ -27,4 +27,3 @@ while game_on:
     screen.update()
     sleep(0.1)
     snake.move()
-
