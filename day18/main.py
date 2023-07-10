@@ -1,23 +1,41 @@
-from turtle import Turtle, Screen, colormode
+import turtle as t
 from random import randint
 from time import sleep
 
 
 def generate_random_color():
-    return (randint(0, 255), randint(0, 255), randint(0, 255))
+    return randint(0, 255), randint(0, 255), randint(0, 255)
 
 
-colormode(255)
-t = Turtle()
-no_sides = 3
+def shapes():
+    no_sides = 3
+    for _ in range(10):
+        t.color(generate_random_color())
 
-for _ in range(10):
-    R, G, B = generate_random_color()
-    t.color((R, G, B))
+        for _ in range(no_sides):
+            tim.forward(100)
+            tim.right(360 / no_sides)
 
-    for _ in range(no_sides):
-        t.forward(100)
-        t.right(360 / no_sides)
+        no_sides += 1
 
-    no_sides += 1
-sleep(5)
+
+def circle(circles):
+    tim.pensize(3)
+    num = 1
+    bw = int(round(255/circles))
+    print(bw)
+    for _ in range(circles):
+        tim.color(bw, bw, bw)
+        tim.circle(num)
+        tim.left(360/circles)
+        tim.forward(1.2)
+        num += 360/circles/2.5
+        bw += round(360/circles)
+
+
+t.colormode(255)
+tim = t.Turtle()
+tim.speed("fastest")
+circle(500)
+screen = t.Screen()
+screen.exitonclick()
