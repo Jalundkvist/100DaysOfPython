@@ -27,7 +27,7 @@ food = Food(screen)
 scoreboard = Scoreboard()
 
 # Game logic
-while snake.inside_boundaries():
+while snake.inside_boundaries() and snake.not_collided():
     screen.update()
     sleep(0.1)
     snake.move()

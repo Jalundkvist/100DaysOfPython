@@ -57,3 +57,9 @@ class Snake:
         elif head.ycor() > SCREEN_RADIUS or head.ycor() < -SCREEN_RADIUS:
             return False
         return True
+
+    def not_collided(self):
+        for segment in self.snake[1:]:
+            if self.head.distance(segment) < 10:
+                return False
+        return True
