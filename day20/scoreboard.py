@@ -1,4 +1,5 @@
 from turtle import Turtle
+from time import sleep
 
 START_POS = (0, 275)
 TEXT_SIZE = 15
@@ -26,3 +27,10 @@ class Scoreboard(Turtle):
     def game_over(self):
         self.goto(0, 0)
         self.write(arg=f"GAME OVER", align="center", font=(FONT, TEXT_SIZE*2, TEXT_TYPE))
+
+    def countdown(self):
+        self.goto(0, 50)
+        for num in range(3, 0, -1):
+            self.write(arg=f"{num}", align="center", font=(FONT, TEXT_SIZE * 2, TEXT_TYPE))
+            sleep(1)
+            self.clear()
