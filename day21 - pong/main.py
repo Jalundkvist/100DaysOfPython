@@ -4,12 +4,17 @@
 ✅ Create the ball that moves
 ✅ Detect collision with wall -> bounce
 ✅ Detect paddle miss
-- Scoreboard
+✅ Scoreboard
+EXTRA
+✅ Ball speed
+✅ Change direction of ball when paddle hit on edge
 """
 
 from turtle import Screen
 from controller import Paddle
 from ball import Ball
+from scoreboard import Scoreboard
+from gameart import GameArt
 from time import sleep
 
 WIDTH, HEIGHT, BG_COLOR = 800, 600, "BLACK"
@@ -37,9 +42,14 @@ def main():
     p1, p2 = Paddle(PDL1_UP, PDL1_DOWN, PDL1_XY, screen, PDL_SPEED), \
         Paddle(PDL2_UP, PDL2_DOWN, PDL2_XY, screen, PDL_SPEED)
     ball = Ball(PDL_POS, screen)
+    scoreboard = Scoreboard(screen)
+    GameArt(HEIGHT)
+    scoreboard.update_score(ball.left_score, ball.right_score)
 
     while True:
         screen.update()
+        if scoreboard.score != [ball.left_score, ball.right_score]:
+            scoreboard.update_score(ball.left_score, ball.right_score)
         ball.move(p1, p2)
         sleep(0.01)
 
