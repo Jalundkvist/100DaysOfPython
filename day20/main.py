@@ -25,7 +25,7 @@ snake = Snake()
 screen = init_screen()
 food = Food(screen)
 scoreboard = Scoreboard()
-scoreboard.countdown()
+scoreboard.countdown(screen)
 # Game logic
 while snake.inside_boundaries() and snake.not_collided():
     screen.update()

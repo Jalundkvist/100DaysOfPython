@@ -1,17 +1,21 @@
 """
-- Create screen
-- Create movable paddles
-- Create the ball that moves
-- Detect collision with wall -> bounce
-- Detect paddle miss
+✅ Create screen
+✅ Create movable paddles
+✅ Create the ball that moves
+✅ Detect collision with wall -> bounce
+✅ Detect paddle miss
 - Scoreboard
 """
 
-from turtle import Screen, Turtle
+from turtle import Screen
+from controller import Paddle
+from ball import Ball
+from time import sleep
 
-HEIGHT, WIDTH, BG_COLOR = 600, 800, "BLACK"
-PDL1_UP, PDL1_DOWN, PDL1_X = "Up", "Down", 350
-PDL2_UP, PDL2_DOWN, PDL2_X = "w", "s", -350
+WIDTH, HEIGHT, BG_COLOR = 800, 600, "BLACK"
+PDL_POS = int((WIDTH/2-25))
+PDL1_UP, PDL1_DOWN, PDL1_XY = "Up", "Down", (PDL_POS, 0)
+PDL2_UP, PDL2_DOWN, PDL2_XY = "w", "s", (-PDL_POS, 0)
 PDL_SPEED = 40
 
 
@@ -19,45 +23,26 @@ def create_screen(height, width, bg_color):
     """ Creates a screen for the pong game """
     pong_screen = Screen()
     pong_screen.bgcolor(bg_color)
-    pong_screen.setup(height=height, width=width)
+    pong_screen.setup(width=width, height=height)
+    pong_screen.tracer(0)
     pong_screen.title("GAME: Pong")
     pong_screen.listen()
+
     return pong_screen
 
 
-def paddle_up(pdl: Turtle):
-    """ Controls the up movement of the paddle"""
-    if pdl.ycor() <= (HEIGHT/2)-70:
-        pdl.goto(pdl.xcor(), pdl.ycor() + PDL_SPEED)
+def main():
+    # Create screen, paddles and ball
+    screen = create_screen(HEIGHT, WIDTH, BG_COLOR)
+    p1, p2 = Paddle(PDL1_UP, PDL1_DOWN, PDL1_XY, screen, PDL_SPEED), \
+        Paddle(PDL2_UP, PDL2_DOWN, PDL2_XY, screen, PDL_SPEED)
+    ball = Ball(PDL_POS, screen)
+
+    while True:
+        screen.update()
+        ball.move(p1, p2)
+        sleep(0.01)
 
 
-def paddle_down(pdl: Turtle):
-    """ Controls the down movement of the paddle"""
-    if pdl.ycor() >= (-HEIGHT/2)+80:
-        pdl.goto(pdl.xcor(), pdl.ycor() - PDL_SPEED)
-
-
-def create_paddle(up, down, x_position, pong_screen: Screen):
-    """ Create a pong paddle and add keybindings for moving"""
-    # Create and position turtle
-    paddle = Turtle()
-    paddle.hideturtle()
-    paddle.penup()
-    paddle.speed("fastest")
-    paddle.shape("square")
-    paddle.shapesize(stretch_len=1, stretch_wid=5)
-    paddle.goto(x_position, 0)
-    paddle.color("white")
-    paddle.showturtle()
-
-    # Add keybindings for paddle
-    pong_screen.onkey(lambda: paddle_up(paddle), up)
-    pong_screen.onkey(lambda: paddle_down(paddle), down)
-    return paddle
-
-
-screen = create_screen(HEIGHT, WIDTH, BG_COLOR)
-p1 = create_paddle(PDL1_UP, PDL1_DOWN, PDL1_X, screen)
-p2 = create_paddle(PDL2_UP, PDL2_DOWN, PDL2_X, screen)
-
-screen.exitonclick()
+if __name__ == "__main__":
+    main()

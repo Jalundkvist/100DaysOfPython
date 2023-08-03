@@ -15,8 +15,6 @@ class Scoreboard(Turtle):
         self.hideturtle()
         self.pu()
         self.pencolor("white")
-        self.goto(START_POS)
-        self.write(arg=f"Score: {self.score}", align="center", font=(FONT, TEXT_SIZE, TEXT_TYPE))
 
     def update_score(self):
         self.score += 1
@@ -28,9 +26,11 @@ class Scoreboard(Turtle):
         self.goto(0, 0)
         self.write(arg=f"GAME OVER", align="center", font=(FONT, TEXT_SIZE*2, TEXT_TYPE))
 
-    def countdown(self):
+    def countdown(self, screen):
         self.goto(0, 50)
         for num in range(3, 0, -1):
             self.write(arg=f"{num}", align="center", font=(FONT, TEXT_SIZE * 2, TEXT_TYPE))
+            screen.update()
             sleep(1)
             self.clear()
+
