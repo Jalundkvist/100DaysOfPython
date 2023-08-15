@@ -1,5 +1,5 @@
 import time
-from turtle import Screen
+from turtle import Screen, Turtle
 from player import Player
 from car_manager import CarManager
 import random
@@ -29,6 +29,12 @@ def car_in_bounds(car_list):
             cars.remove(car)
 
 
+def player_collision(turtle: Turtle, car: Turtle):
+    if turtle.distance(car) < 45 and 22 > turtle.ycor() - car.ycor() > -22:
+        return True
+    return False
+
+
 game_is_on = True
 while game_is_on:
     if counter < 6:
@@ -39,6 +45,8 @@ while game_is_on:
         for _ in range(amount_of_cars):
             cars.append(CarManager(screen))
     car_in_bounds(cars)
+    for car in cars:
+        player_collision(player, car)
     time.sleep(0.1)
     screen.update()
 
