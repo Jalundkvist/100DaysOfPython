@@ -2,22 +2,11 @@ import time
 from turtle import Screen, Turtle
 from player import Player
 from car_manager import CarManager
-import random
 from scoreboard import Scoreboard
 
-MAX_CARS = 2
 
-
-def move_cars(car_list, speed_multiplier):
-    for car in car_list[::-1]:
-        car.move_car(speed_multiplier)
-        if car.is_outside():
-            car.hideturtle()
-            car_list.remove(car)
-
-
-def collision_check(turtle: Turtle, car: Turtle):
-    if turtle.distance(car) < 36 and 20 > turtle.ycor() - car.ycor() > -20:
+def collision_check(player_turtle: Turtle, car: Turtle):
+    if player_turtle.distance(car) < 36 and 20 > player_turtle.ycor() - car.ycor() > -20:
         return True
     return False
 
@@ -31,35 +20,37 @@ def main():
 
     # Create 'player' turtle
     player = Player()
-    screen.onkeypress(player.move_turtle, 'Up')
+    screen.onkeypress(player.move_player, 'Up')
+
+    # Vehicles
+    cars = CarManager()
 
     # Create scoreboard
     scoreboard = Scoreboard()
 
     # Variables
-    counter = 0
-    amount_of_cars = random.randint(0, MAX_CARS)
-    cars = []
     game_is_on = True
 
+    # Game on
     while game_is_on:
-        scoreboard.level(player.score)
-        if counter >= 6:
-            counter = 0
-            amount_of_cars = random.randint(0, MAX_CARS)
-            for _ in range(amount_of_cars):
-                cars.append(CarManager(screen))
-
-        counter += 1
-        move_cars(cars, player.score)
-        for car in cars:
+        # Car logic
+        for car in cars.all_cars:
             if collision_check(player, car):
                 game_is_on = False
+        cars.new_car()
+        cars.move_cars()
+
+        # Score logic
+        if player.at_finish_line():
+            player.goto_start()
+            scoreboard.level_up()
+
         time.sleep(0.1)
         screen.update()
 
+    # Game over
     scoreboard.game_over()
-    for car in cars:
+    for car in cars.all_cars:
         car.hideturtle()
     screen.update()
     screen.exitonclick()
