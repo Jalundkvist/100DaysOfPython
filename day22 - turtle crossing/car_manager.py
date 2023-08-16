@@ -3,7 +3,7 @@ from turtle import Turtle, Screen
 
 COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
 STARTING_MOVE_DISTANCE = 5
-MOVE_INCREMENT = 10
+MOVE_INCREMENT = 8
 SCREEN_BORDER = -300
 SCREEN_START = 300
 CAR_ZONE = [-260, 260]
@@ -27,5 +27,5 @@ class CarManager(Turtle):
             return True
         return False
 
-    def move_car(self):
-        self.forward(MOVE_INCREMENT)
+    def move_car(self, multiplier: int = 1):
+        self.forward(MOVE_INCREMENT + 2*multiplier)
