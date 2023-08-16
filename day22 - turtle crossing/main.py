@@ -12,6 +12,7 @@ screen.setup(width=600, height=600)
 screen.tracer(0)
 screen.listen()
 player = Player()
+scoreboard = Scoreboard()
 screen.onkeypress(player.move_turtle, 'Up')
 
 
@@ -30,13 +31,14 @@ def car_in_bounds(car_list):
 
 
 def player_collision(turtle: Turtle, car: Turtle):
-    if turtle.distance(car) < 45 and 22 > turtle.ycor() - car.ycor() > -22:
+    if turtle.distance(car) < 36 and 20 > turtle.ycor() - car.ycor() > -20:
         return True
     return False
 
 
 game_is_on = True
 while game_is_on:
+    scoreboard.level(player.score)
     if counter < 6:
         counter += 1
     else:
@@ -46,7 +48,13 @@ while game_is_on:
             cars.append(CarManager(screen))
     car_in_bounds(cars)
     for car in cars:
-        player_collision(player, car)
+        if player_collision(player, car):
+            game_is_on = False
     time.sleep(0.1)
     screen.update()
 
+scoreboard.game_over()
+for car in cars:
+    car.hideturtle()
+screen.update()
+screen.exitonclick()
