@@ -26,14 +26,20 @@ screen = init_screen()
 food = Food(screen)
 scoreboard = Scoreboard()
 scoreboard.countdown(screen)
+game_on = True
 # Game logic
-while snake.inside_boundaries() and snake.not_collided():
+while game_on:
+    if not snake.inside_boundaries() or snake.collided():
+        snake.reset()
+        scoreboard.reset()
+        screen.update()
+        scoreboard.countdown(screen)
     screen.update()
     sleep(0.1)
     snake.move()
     if snake.head.distance(food) < 15:
         food.refresh()
-        scoreboard.update_score()
+        scoreboard.add_score()
         snake.extend()
 
 # Game over

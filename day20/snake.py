@@ -58,8 +58,15 @@ class Snake:
             return False
         return True
 
-    def not_collided(self):
+    def collided(self):
         for segment in self.snake[1:]:
             if self.head.distance(segment) < 10:
-                return False
-        return True
+                return True
+        return False
+
+    def reset(self):
+        for segment in self.snake:
+            segment.goto(1000, 1000)
+        self.snake.clear()
+        self.init_snake()
+        self.head = self.snake[0]
