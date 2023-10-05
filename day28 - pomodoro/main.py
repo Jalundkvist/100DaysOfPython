@@ -10,31 +10,55 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 CHECKMARK = '✅'
+reps = 0
+rest_counter = 0
+timer = None
 
-# ---------------------------- TIMER RESET ------------------------------- #
+
+def bring_to_front():
+    window.attributes('-topmost', True)
+    window.attributes('-topmost', False)
 
 
 def timer_reset():
-    pass
-
-# ---------------------------- TIMER MECHANISM ------------------------------- #
+    # Timer mechanism to reset the timer
+    global reps, rest_counter
+    window.after_cancel(timer)
+    label_title.config(text='Timer', fg=GREEN)
+    canvas.itemconfig(label_timer, text=f"00:00")
+    label_checkbox.config(text='')
+    rest_counter, reps = 0, 0
 
 
 def timer_start():
-    countdown(5)
-# ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
-
-
-def countdown(count):
-    canvas.itemconfig(label_timer, text=count)
-    #global remaining_seconds
-    if remaining_seconds > 0:
-        mm, ss = divmod(remaining_seconds, 60)
-        timer_label.config(text=f"Time remaining: {mm:02d}:{ss:02d}")
-        remaining_seconds -= 1
-        root.after(1000, update_timer)  # Call update_timer after 1000 milliseconds (1 second)
+    # Timer mechanism to start the timer
+    global reps, rest_counter
+    reps += 1
+    bring_to_front()
+    if reps > 8:
+        timer_reset()
+    elif reps == 8:
+        label_title.config(text='Long break!', fg=RED)
+        countdown(LONG_BREAK_MIN * 60)
+    elif reps % 2 == 0:
+        countdown(SHORT_BREAK_MIN * 60)
+        rest_counter += 1
+        label_checkbox.config(text=CHECKMARK * rest_counter)
+        label_title.config(text='Short break!', fg=PINK)
     else:
-        timer_label.config(text="Time's up!")
+        countdown(WORK_MIN * 60)
+        label_title.config(text='Work!', fg=GREEN)
+
+
+def countdown(seconds):
+    """ Countdown mechanism for the timer """
+    global timer
+    mm, ss = divmod(seconds, 60)
+    canvas.itemconfig(label_timer, text=f"{mm:02d}:{ss:02d}")
+    if seconds > 0:
+        timer = window.after(1000, countdown, seconds-1)  # Call update_timer after 1000 milliseconds (1 second)
+    else:
+        timer_start()
 
 
 # ---------------------------- UI SETUP ------------------------------- #
