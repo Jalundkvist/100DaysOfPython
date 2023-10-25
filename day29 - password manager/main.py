@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+import pyperclip
 import random
 
 LABELS = ["Website:", "Username:", "Password:"]
@@ -8,6 +9,7 @@ letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+', '-']
+PW_LIST = [letters, numbers, symbols]
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -15,10 +17,8 @@ def generate_password():
     entry_password.delete(0, END)
     password = []
     no_letters, no_numbers, no_symbols = [random.randint(4, 10) for _ in range(3)]
-    password += [random.choice(letters) for _ in range(no_letters)]
-    password += [random.choice(numbers) for _ in range(no_numbers)]
-    password += [random.choice(symbols) for _ in range(no_symbols)]
-    print(password)
+    for index, num in enumerate([no_letters, no_numbers, no_symbols]):
+        password += [random.choice(PW_LIST[index]) for _ in range(num)]
     random.shuffle(password)
     password = ''.join(password)
     entry_password.insert(index=0, string=password)
@@ -36,6 +36,7 @@ def save_password():
                                                           f"\nPassword: {data[2]} \nIs it ok to save?")
     if is_ok:
         write_to_file(data, "data.txt")
+        pyperclip.copy(data[2])
         entry_website.delete(0, END)
         entry_password.delete(0, END)
 
